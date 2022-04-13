@@ -5,7 +5,8 @@ MQTT client
 About
 #####
 
-Asynchronous MQTT client for 3.1.1 protocol version.
+Asynchronous MQTT client for 3.1.1 protocol version (mod).
+Because of abandoned original repo this fork adds support for python >= 3.10
 
 Installation
 ############

@@ -10,13 +10,13 @@ VERSION = imp.load_source('version', os.path.join('.', 'aio_mqtt', 'version.py')
 VERSION = VERSION.__version__
 
 setuptools.setup(
-    name='aio-mqtt',
+    name='aio-mqtt-mod',
     version=VERSION,
     description="Asynchronous MQTT client for 3.1.1 protocol version.",
     long_description=README,
     author='Not Just A Toy Corp.',
     author_email='dev@notjustatoy.com',
-    url='https://github.com/NotJustAToy/aio-mqtt',
+    url='https://github.com/devbis/aio-mqtt',
     packages=setuptools.find_packages(exclude=('tests', 'tests.*')),
     keywords='mqtt asyncio',
     zip_safe=False,
@@ -44,6 +44,8 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Communications',
         'Topic :: Internet',
     ]

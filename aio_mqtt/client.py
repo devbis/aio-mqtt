@@ -163,12 +163,9 @@ class Client:
         self._outgoing_messages: ty.Dict[int, InflightMessage[PublishableMessage]] = {}
         self._reader: ty.Optional[aio.StreamReader] = None
         self._writer: ty.Optional[aio.StreamWriter] = None
-        self._drain_lock = aio.Lock(
-            **({"loop": loop} if sys.version_info[:2] < (3, 8) else {})
-        )
-        self._connection_lock = aio.Lock(
-            **({"loop": loop} if sys.version_info[:2] < (3, 8) else {})
-        )
+        lock_params = {"loop": self._loop} if sys.version_info[:2] < (3, 8) else {}
+        self._drain_lock = aio.Lock(**lock_params)
+        self._connection_lock = aio.Lock(**lock_params)
         self._ping_response_received = False
         self._consumer_queues: TopicMatcher[ty.Set[aio.Queue[DeliveredMessage]]] = TopicMatcher()
         self._disconnect_reason: ty.Optional[aio.Future] = None
