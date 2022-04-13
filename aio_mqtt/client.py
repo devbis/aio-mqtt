@@ -163,9 +163,9 @@ class Client:
         self._outgoing_messages: ty.Dict[int, InflightMessage[PublishableMessage]] = {}
         self._reader: ty.Optional[aio.StreamReader] = None
         self._writer: ty.Optional[aio.StreamWriter] = None
-        lock_params = {"loop": self._loop} if sys.version_info[:2] < (3, 8) else {}
-        self._drain_lock = aio.Lock(**lock_params)
-        self._connection_lock = aio.Lock(**lock_params)
+        self._compat_loop = {"loop": self._loop} if sys.version_info[:2] < (3, 8) else {}
+        self._drain_lock = aio.Lock(**self._compat_loop)
+        self._connection_lock = aio.Lock(**self._compat_loop)
         self._ping_response_received = False
         self._consumer_queues: TopicMatcher[ty.Set[aio.Queue[DeliveredMessage]]] = TopicMatcher()
         self._disconnect_reason: ty.Optional[aio.Future] = None
@@ -202,7 +202,7 @@ class Client:
 
             try:
                 self._reader, self._writer = await aio.open_connection(
-                    host=host, port=port, loop=self._loop, ssl=ssl)
+                    host=host, port=port, ssl=ssl, **self._compat_loop)
             except OSError as e:
                 raise ConnectFailedError() from e
 
@@ -318,7 +318,7 @@ class Client:
         if queues is None:
             queues = set()
             self._consumer_queues[topic_filter] = queues
-        queue: aio.Queue[DeliveredMessage] = aio.Queue(loop=self._loop)
+        queue: aio.Queue[DeliveredMessage] = aio.Queue(**self._compat_loop)
         queues.add(queue)
         try:
             while True:
@@ -796,7 +796,7 @@ class Client:
         next_ping_time = time_func() + keepalive
         ping_response_no_later = None
         while True:
-            await aio.sleep(1, loop=self._loop)
+            await aio.sleep(1, **self._compat_loop)
             now = time_func()
             if next_ping_time <= now:
                 await self._send_pingreq()
@@ -834,6 +834,6 @@ class Client:
 
     async def _message_retry_checking_task(self) -> None:
         while True:
-            await aio.sleep(1, loop=self._loop)
+            await aio.sleep(1, **self._compat_loop)
             await self._message_retry_check_actual(self._outgoing_messages)
             await self._message_retry_check_actual(self._incoming_messages)
