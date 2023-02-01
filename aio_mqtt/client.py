@@ -129,7 +129,7 @@ def packet_ids() -> ty.Generator[int, None, None]:
     packet_id = 1
     while True:
         yield packet_id
-        packet_id = packet_id + 1 if packet_id <= MAXIMUM_PACKET_ID else 1
+        packet_id = packet_id + 1 if packet_id < MAXIMUM_PACKET_ID else 1
 
 
 class ConnectResult(ty.NamedTuple):
