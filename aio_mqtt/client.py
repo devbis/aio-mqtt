@@ -21,12 +21,14 @@ import sys
 import time
 import typing as ty
 import uuid
-from ssl import SSLContext
 
 from .constants import *
 from .enums import *
 from .exceptions import *
 from .utils import *
+
+if ty.TYPE_CHECKING:
+    from ssl import SSLContext
 
 __all__ = (
     'PublishableMessage',
@@ -174,7 +176,7 @@ class Client:
             self,
             host: str,
             port: int = 1883,
-            ssl: ty.Optional[ty.Union[bool, SSLContext]] = None,
+            ssl: ty.Optional[ty.Union[bool, 'SSLContext']] = None,
             keepalive: int = 60,
             client_id: ty.Optional[str] = None,
             clean_session: bool = True,
