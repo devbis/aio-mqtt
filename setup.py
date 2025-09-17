@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 import os
-import imp
+import importlib.util
+import importlib.machinery
 import setuptools
+
+def load_source(modname, filename):
+    loader = importlib.machinery.SourceFileLoader(modname, filename)
+    spec = importlib.util.spec_from_file_location(modname, filename, loader=loader)
+    module = importlib.util.module_from_spec(spec)
+    loader.exec_module(module)
+    return module
 
 with open('README.rst', 'rb') as readme_file:
     README = readme_file.read().decode('utf-8')
 
-VERSION = imp.load_source('version', os.path.join('.', 'aio_mqtt', 'version.py'))
+VERSION = load_source('version', os.path.join('.', 'aio_mqtt', 'version.py'))
 VERSION = VERSION.__version__
 
 setuptools.setup(
