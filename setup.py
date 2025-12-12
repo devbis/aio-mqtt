@@ -30,7 +30,7 @@ setuptools.setup(
     zip_safe=False,
     include_package_data=True,
     license='Apache License 2.0',
-    python_requires='>=3.6.0',
+    python_requires='>=3.9.0',
     tests_require=[
         'pytest>=3.1.1,<4',
         'pytest-cov>=2.3.1',
@@ -49,11 +49,6 @@ setuptools.setup(
         'Natural Language :: English',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
         'Topic :: Communications',
         'Topic :: Internet',
     ]
